@@ -17,7 +17,10 @@ namespace BlackJack
         {
             InitializeComponent();
             playDeck.Shuffle();
-            //playersHand.Deal(playDeck);
+            
+            button2.Enabled = false;
+            button3.Enabled = false;
+            
         }
         
         
@@ -25,6 +28,7 @@ namespace BlackJack
         Deck playDeck = new Deck();
         //tworzymy "Hand" Playera
         Hand playersHand = new Hand();
+        
         //tworzymy "Hand" Dealera
         Hand dealersHand = new Hand();
         private string temp = "";
@@ -39,21 +43,29 @@ namespace BlackJack
                 dealersHand.Deal(playDeck);
                 if (i == 1)
                 {
-                    temp = dealersHand.printCardName(); //chowamy tą drugą kartę...
+                    temp = dealersHand.card_name; //chowamy tą drugą kartę...
                     dealersHand.getResult();
                     listBox2.Items.Add("***");
                 }
-                else
+                if (playersHand.scoreOfPlayer == 22) //w przypadku gdy wylosuje dwa asy
                 {
-                    listBox2.Items.Add(dealersHand.printCardName());
+                    playersHand.scoreOfPlayer = 12; //jeden as liczy sie jako 1
+                    label3.Text = playersHand.getResult();
+                }
+                if(i==0)
+                {
+                    listBox2.Items.Add(dealersHand.card_name);
                     label4.Text = dealersHand.getResult();
                 }
                 if (playersHand.scoreOfPlayer == 21)
                 {
                     MessageBox.Show(" CONGRATS You have BlackJack :=) ");
+                    ask_player();
                 }
+                
                                 
             }
+           
         }
 
         private void else_Deal(Hand currentPlayer, Deck currentDeck)
@@ -63,48 +75,57 @@ namespace BlackJack
             
                 if (currentPlayer == playersHand)
                 {
-                    currentPlayer.getResult();
+                    
                     listBox1.Items.Add(playersHand.printCardName());
-                    label3.Text = playersHand.scoreOfPlayer.ToString();
+                    label3.Text = playersHand.getResult();
+                    if (currentPlayer.scoreOfPlayer > 21)
+                    {
+                        MessageBox.Show(" PLAYER BUSTED :=( ");
+                        ask_player();
+                    }
+                    if (currentPlayer.scoreOfPlayer == 21)
+                    {
+                        MessageBox.Show("PLAYER CONGRATS You have BlackJack :=) ");
+                        ask_player();
+                    }
                 }
-            if(currentPlayer.scoreOfPlayer > 21)
-            {  
-                MessageBox.Show(" PLAYER BUSTED :=( ");
-            }
-            if (currentPlayer.scoreOfPlayer == 21)
-            {
-                MessageBox.Show("PLAYER CONGRATS You have BlackJack :=) ");
-            }
-            
-            
-            else if (currentPlayer == dealersHand)
-            {
-                
-                
-                listBox2.Items.Add(dealersHand.printCardName());
-                label4.Text = dealersHand.scoreOfPlayer.ToString();
-            }
+                if (currentPlayer == dealersHand)
+                {
 
-            
+
+                    listBox2.Items.Add(currentPlayer.printCardName());
+                    label4.Text = currentPlayer.getResult();
+                }
+           
+                                                         
         }
         private void compare_Results()
         {
             if (playersHand.scoreOfPlayer > dealersHand.scoreOfPlayer && playersHand.scoreOfPlayer <= 21)
             {
                 MessageBox.Show("PLAYER WON");
+                ask_player();
             }
             if(dealersHand.scoreOfPlayer > playersHand.scoreOfPlayer && dealersHand.scoreOfPlayer <= 21 )
             {
                 MessageBox.Show("DEALER WON! YOU LOST :(");
+                ask_player();
             }
             if (playersHand.scoreOfPlayer > 21)
             {
                 MessageBox.Show("PLAYER  BUSTED :=( ");
+                ask_player();
             }
 
             if (dealersHand.scoreOfPlayer > 21)
             {
                 MessageBox.Show("DEALER  BUSTED :=( ");
+                ask_player();
+            }
+            if (dealersHand.scoreOfPlayer == playersHand.scoreOfPlayer)
+            {
+                MessageBox.Show("YOU DRAW  :(");
+                ask_player();
             }
 
         }
@@ -120,6 +141,8 @@ namespace BlackJack
         {
             first_Deal(playDeck);
             button1.Enabled = false;  // dezaktywujemy przycisk pierwszego rozdania kart
+            button2.Enabled = true;
+            button3.Enabled = true;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -139,18 +162,61 @@ namespace BlackJack
         {
             //gdy punkty dealera sa mniejsze od 17 dobieramy, dobieramy poki nie bedzie mial wiecej niz 21
 
-                       
-                       
-                if (dealersHand.scoreOfPlayer < 17)
+
+            for(int i=0;i<2;i++)
+            {
+                if(dealersHand.scoreOfPlayer<17)
                 {
+
                     else_Deal(dealersHand, playDeck);
+
                 }
+
                 listBox2.Items[1] = temp;
-                dealersHand.getResult();
-                label4.Text = dealersHand.getResult();
+                
+                label4.Text = dealersHand.scoreOfPlayer.ToString();
             
                 compare_Results();
+            }
+        }
+        private void ask_player()
+        {
+            DialogResult dialog = MessageBox.Show(" If you want to play again press: RETRY ", "DO YOU WANT TO CANCEL? ", MessageBoxButtons.RetryCancel);
+            if (dialog == DialogResult.Retry)
+            {
+
+            }
+            else if (dialog == DialogResult.Cancel)
+            {
+                this.Close();
+            }
 
         }
+        private void reload_game() //zastanowic sie nad currentDeck
+        {
+            //wyczyscic listBoxy
+            //wyczyscic textLabels
+            //deaaktywowac przyciski hit i stand zostawic aktywnym deal
+            //potem wywolac funkcje firstdeal :) i ma kurde dzialac
+        }
+        
+        /*private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            const string message =
+                "Are you sure that you would like to close the form?";
+            const string caption = "Form Closing";
+            var result = MessageBox.Show(message, caption,
+                                         MessageBoxButtons.YesNo,
+                                         MessageBoxIcon.Question);
+
+            // If the no button was pressed ...
+            if (result == DialogResult.No)
+            {
+                // cancel the closure of the form.
+                e.Cancel = true;
+            }
+        }
+         * */
+       
     }
 }

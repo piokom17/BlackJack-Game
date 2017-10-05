@@ -51,7 +51,7 @@
             // listBox2
             // 
             this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(366, 60);
+            this.listBox2.Location = new System.Drawing.Point(360, 60);
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(172, 82);
             this.listBox2.TabIndex = 1;
@@ -70,7 +70,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Modern No. 20", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(422, 9);
+            this.label2.Location = new System.Drawing.Point(407, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(62, 21);
             this.label2.TabIndex = 3;
@@ -89,18 +89,18 @@
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Modern No. 20", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(256, 161);
+            this.label3.Location = new System.Drawing.Point(242, 161);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(59, 60);
+            this.label3.Size = new System.Drawing.Size(43, 26);
             this.label3.TabIndex = 5;
-            this.label3.Text = "0     :";
+            this.label3.Text = "0     ";
             // 
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Modern No. 20", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(324, 161);
+            this.label4.Location = new System.Drawing.Point(342, 161);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(60, 60);
+            this.label4.Size = new System.Drawing.Size(60, 26);
             this.label4.TabIndex = 6;
             this.label4.Text = " 0";
             // 
@@ -128,6 +128,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.ForestGreen;
             this.ClientSize = new System.Drawing.Size(624, 420);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);

@@ -42,32 +42,7 @@ namespace BlackJack
             return null;
 
         }
-        /* public Card Deal(int index)
-         {
-             Card CardToDeal = cards[index];
-             cards.RemoveAt(index);
-             return CardToDeal;
-
-         }
-         //jezeli nie przekazujemy metodzie zadnych parametrow bedzie pobierala element z gory listy czyli pierwsza karte :)
-         public Card Deal()
-         {
-             return Deal(0);
-         }
-         //dodaje karte do listy
-         public void Add(Card cardToAdd)
-         {
-             cards.Add(cardToAdd);
-         }
-         // odejmuje karte z listy
-         public Card Remove(int index)
-         {
-             Card CardToRemove = cards[index];
-             cards.RemoveAt(index);
-             return CardToRemove;
-         }
-         */
-        //tasowanie - shuffle
+        
         public void Shuffle()
         {
             List<Card> NewCards = new List<Card>();
