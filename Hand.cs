@@ -14,9 +14,10 @@ namespace BlackJack
         public int scoreOfCard { get; set; }
         public string card_name { get; set; }
         public int initialAmountOfMoney = 300;
+        public int cashToBet { get; set; }
         public string result { get; set; }
 
-        public Hand()//czy to ma sens?
+        public Hand()
         {
             //number_of_cards = numcards;
             cards_in_hand = new List<Card>();

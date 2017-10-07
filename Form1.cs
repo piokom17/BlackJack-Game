@@ -17,11 +17,13 @@ namespace BlackJack
         {
             InitializeComponent();
             playDeck.Shuffle();
-            
+            player_money.Text = " $+ " + playersHand.initialAmountOfMoney.ToString();
+            button1.Enabled = false;
             button2.Enabled = false;
             button3.Enabled = false;
             
         }
+        
         
         
         //tworzymy talie kart
@@ -32,9 +34,13 @@ namespace BlackJack
         //tworzymy "Hand" Dealera
         Hand dealersHand = new Hand();
         private string temp = "";
+        //zastanowic sie gdzie zrobic funkcje obstawiania ?
 
         private void first_Deal(Deck currentDeck)
         {
+            five_dollar.Enabled = false;
+            ten_dollar.Enabled = false;
+            twenty_dollar.Enabled = false;
             for (int i = 0; i < 2; i++)
             {
                 playersHand.Deal(playDeck);
@@ -47,7 +53,7 @@ namespace BlackJack
                     dealersHand.getResult();
                     listBox2.Items.Add("***");
                 }
-                if (playersHand.scoreOfPlayer == 22) //w przypadku gdy wylosuje dwa asy
+                if (playersHand.scoreOfPlayer > 21) //w przypadku gdy wylosuje dwa asy
                 {
                     playersHand.scoreOfPlayer = 12; //jeden as liczy sie jako 1
                     label3.Text = playersHand.getResult();
@@ -60,6 +66,8 @@ namespace BlackJack
                 if (playersHand.scoreOfPlayer == 21)
                 {
                     MessageBox.Show(" CONGRATS You have BlackJack :=) ");
+                    playersHand.initialAmountOfMoney += 2*playersHand.cashToBet;
+                    player_money.Text = " $+ " + playersHand.initialAmountOfMoney.ToString();
                     ask_player();
                 }
                 
@@ -81,11 +89,14 @@ namespace BlackJack
                     if (currentPlayer.scoreOfPlayer > 21)
                     {
                         MessageBox.Show(" PLAYER BUSTED :=( ");
+                                               
                         ask_player();
                     }
                     if (currentPlayer.scoreOfPlayer == 21)
                     {
                         MessageBox.Show("PLAYER CONGRATS You have BlackJack :=) ");
+                        currentPlayer.initialAmountOfMoney += 2*currentPlayer.cashToBet;
+                        player_money.Text = " $+ " + currentPlayer.initialAmountOfMoney.ToString();
                         ask_player();
                     }
                 }
@@ -104,27 +115,35 @@ namespace BlackJack
             if (playersHand.scoreOfPlayer > dealersHand.scoreOfPlayer && playersHand.scoreOfPlayer <= 21)
             {
                 MessageBox.Show("PLAYER WON");
+                playersHand.initialAmountOfMoney += 2*playersHand.cashToBet;
+                player_money.Text = " $+ " + playersHand.initialAmountOfMoney.ToString();
                 ask_player();
             }
             if(dealersHand.scoreOfPlayer > playersHand.scoreOfPlayer && dealersHand.scoreOfPlayer <= 21 )
             {
                 MessageBox.Show("DEALER WON! YOU LOST :(");
+                
                 ask_player();
             }
             if (playersHand.scoreOfPlayer > 21)
             {
                 MessageBox.Show("PLAYER  BUSTED :=( ");
+                
                 ask_player();
             }
 
             if (dealersHand.scoreOfPlayer > 21)
             {
                 MessageBox.Show("DEALER  BUSTED :=( ");
+                playersHand.initialAmountOfMoney += 2*playersHand.cashToBet;
+                player_money.Text = " $+ " + playersHand.initialAmountOfMoney.ToString();
                 ask_player();
             }
-            if (dealersHand.scoreOfPlayer == playersHand.scoreOfPlayer)
+            if (dealersHand.scoreOfPlayer == playersHand.scoreOfPlayer && dealersHand.scoreOfPlayer != 0 && playersHand.scoreOfPlayer != 0)
             {
                 MessageBox.Show("YOU DRAW  :(");
+                playersHand.initialAmountOfMoney += playersHand.cashToBet;
+                
                 ask_player();
             }
 
@@ -163,41 +182,103 @@ namespace BlackJack
             //gdy punkty dealera sa mniejsze od 17 dobieramy, dobieramy poki nie bedzie mial wiecej niz 21
 
 
-            for(int i=0;i<2;i++)
-            {
-                if(dealersHand.scoreOfPlayer<17)
+            
+            
+                do
                 {
 
                     else_Deal(dealersHand, playDeck);
 
-                }
+                }while((dealersHand.scoreOfPlayer<17));
 
                 listBox2.Items[1] = temp;
                 
                 label4.Text = dealersHand.scoreOfPlayer.ToString();
             
                 compare_Results();
-            }
+            
         }
         private void ask_player()
         {
             DialogResult dialog = MessageBox.Show(" If you want to play again press: RETRY ", "DO YOU WANT TO CANCEL? ", MessageBoxButtons.RetryCancel);
             if (dialog == DialogResult.Retry)
             {
+                //sprawdzamy co robi refresh, fajne ale niedokonca o to chodzi
 
+                reload_game();
+                //Properties.Settings.Defau
             }
             else if (dialog == DialogResult.Cancel)
             {
                 this.Close();
             }
+            
 
         }
         private void reload_game() //zastanowic sie nad currentDeck
         {
             //wyczyscic listBoxy
-            //wyczyscic textLabels
-            //deaaktywowac przyciski hit i stand zostawic aktywnym deal
+            listBox1.Items.Clear();
+            listBox2.Items.Clear();
+            //wyczyscic amount of cashlabel
+            amount_of_cash_label.Text = String.Empty;
+            playersHand.scoreOfPlayer = 0;
+            dealersHand.scoreOfPlayer = 0;
+            playersHand.cashToBet = 0;
+            label3.Text = String.Empty;
+            label4.Text = String.Empty;
+                        //deaaktywowac przyciski hit i stand zostawic aktywnym deal
             //potem wywolac funkcje firstdeal :) i ma kurde dzialac
+            playDeck.Shuffle();
+            button1.Enabled = false;
+            button2.Enabled = false;
+            button3.Enabled = false;
+            five_dollar.Enabled = true;
+            ten_dollar.Enabled = true;
+            twenty_dollar.Enabled = true;
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void five_dollar_Click(object sender, EventArgs e)
+        {
+            playersHand.cashToBet += 5;
+            amount_of_cash_label.Text = " $+ " + playersHand.cashToBet.ToString();
+            playersHand.initialAmountOfMoney -= 5;
+            player_money.Text = " $+ " + playersHand.initialAmountOfMoney.ToString();
+            if (playersHand.cashToBet != 0)
+            {
+                button1.Enabled = true;
+            }
+
+        }
+
+        private void ten_dollar_Click(object sender, EventArgs e)
+        {
+            playersHand.cashToBet += 10;
+            amount_of_cash_label.Text = " $+ " + playersHand.cashToBet.ToString();
+            playersHand.initialAmountOfMoney -= 10;
+            player_money.Text = " $+ " + playersHand.initialAmountOfMoney.ToString();
+            if (playersHand.cashToBet != 0)
+            {
+                button1.Enabled = true;
+            }
+        }
+
+        private void twenty_dollar_Click(object sender, EventArgs e)
+        {
+            playersHand.cashToBet += 20;
+            amount_of_cash_label.Text = " $+ " + playersHand.cashToBet.ToString();
+            playersHand.initialAmountOfMoney -= 20;
+            player_money.Text = " $+ " + playersHand.initialAmountOfMoney.ToString();
+            if (playersHand.cashToBet != 0)
+            {
+                button1.Enabled = true;
+            }
         }
         
         /*private void Form1_FormClosing(object sender, FormClosingEventArgs e)
